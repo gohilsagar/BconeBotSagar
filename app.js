@@ -29,30 +29,3 @@ server.post('/api/messages', connector.listen());
 bot.dialog('/', function (session) {
     session.send("Hello World");
 });
-
-
-var http = require('http'),
-fs = require('fs');
-
-
-fs.readFile('./termsOfUse.html', function (err, html) {
-    if (err) {
-        throw err;
-    }
-    http.createServer(function(request, response) {
-        response.writeHeader(200, {"Content-Type": "text/html"});
-        response.write(html);
-        response.end();
-    }).listen(80);
-});
-
-fs.readFile('./privacyStatement.html', function (err, html) {
-    if (err) {
-        throw err;
-    }
-    http.createServer(function(request, response) {
-        response.writeHeader(200, {"Content-Type": "text/html"});
-        response.write(html);
-        response.end();
-    }).listen(81);
-});
