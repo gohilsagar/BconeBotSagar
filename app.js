@@ -41,7 +41,7 @@ bot.on('conversationUpdate', function (message) {
             console.log("not self");
             bot.send(new builder.Message()
                 .address(message.address)
-                .text('Welcome ' + membersAdded + "! I am VendorBot! How can I help you?"));
+                .text('Welcome ' + membersAdded + "! How can I help you?"));
             bot.beginDialog(message.address,'/');
         }
     }
@@ -53,7 +53,7 @@ bot.dialog('/', [
     function (session, results) {
         // session.send("Hello! I am VendorBot! How can I help you? ");
         console.log(results);
-        builder.Prompts.text(session, "You can say something like, 'What is the status of my payment?' or 'I would like to know inventory details for products I supply'");
+        builder.Prompts.text(session, "You can say : 'Payment status' or 'Pending Payment' or 'Inventory' or 'Issue' ");
     },
     function (session, results) {
         RootMenu(session,results);
@@ -84,7 +84,7 @@ function RootMenu(session,results) {
         session.beginDialog('/');
     } else {
         session.send("Not Trained...");
-        //session.endDialog();
+        session.beginDialog('/');
     }
 }
 
