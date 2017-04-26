@@ -99,7 +99,6 @@ bot.dialog('/verification', [
         session.send(results.response);
         session.send("OTP Verified. Thank You");
         session.userData.isVerified = true;
-        console.log("Verification Status is " + session.userData.isVerified );
         session.endDialog();
     }
     ]);
@@ -107,19 +106,24 @@ bot.dialog('/verification', [
 bot.dialog('/payment', [
     function (session,args,next) {
         var response = args || {};
+       ; session.dialogData.rootResponse = response;
         if (!session.userData.isVerified) {
             session.beginDialog('/verification');
-        } else {
-            if(response.toUpperCase().indexOf("PENDING") != -1)
-            {
-                session.beginDialog('/pendingPayments');
-                //next();
-            }
-            else
-            {
-                session.beginDialog('/otherPayments');
-            }
-
+        }
+        else
+        {
+            next();
+        }
+    },
+    function (session) {
+     var response = session.dialogData.rootResponse;
+        if(response.toUpperCase().indexOf("PENDING") != -1)
+        {
+            session.beginDialog('/pendingPayments');
+        }
+        else
+        {
+            session.beginDialog('/otherPayments');
         }
     },
     function (session,results) {
