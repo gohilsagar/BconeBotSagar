@@ -3,6 +3,9 @@
  */
 var restify = require('restify');
 var builder = require('botbuilder');
+var dateFormat = require('dateformat');
+
+const {Wit, log} = require('node-wit');
 
 //=========================================================
 // Bot Setup
@@ -26,6 +29,8 @@ server.post('/api/messages', connector.listen());
 // Bots Dialogs
 //=========================================================
 
+var Enum = require('enum');
+var rootFlow = new Enum(['payment', 'issue', 'StartGreeting'],{ignoreCase:true});
 
 bot.on('conversationUpdate', function (message) {
     console.log("Called Conversation updated");
@@ -51,12 +56,22 @@ bot.on('conversationUpdate', function (message) {
 // Root dialog for entry point in application
 bot.dialog('/', [
     function (session, results) {
-        // session.send("Hello! I am VendorBot! How can I help you? ");
-        console.log(results);
-        builder.Prompts.text(session, "You can say : 'Payment status' or 'Pending Payment' or 'Inventory' or 'Issue' ");
+
+        // Changes suggested by rakhi for demo 04-05-2017
+        builder.Prompts.choice(session, "Please select an option below", "Payment Status|Inventory Information|Issues", {listStyle: builder.ListStyle.button});
+        // End
+
+        /*builder.Prompts.text(session, "You can say : 'Payment status' or 'Pending Payment' or 'Inventory' or 'Issue' ");*/
     },
     function (session, results) {
-        RootMenu(session,results);
+
+        // Changes suggested by rakhi for demo 04-05-2017
+        var data = {};
+        data.response = results.response.entity;
+        RootMenu(session, data);
+        // End
+
+        /*RootMenu(session,results);*/
     },
     function (session,results) {
         console.log("root final : " + results.response);
@@ -65,27 +80,35 @@ bot.dialog('/', [
 ]);
 
 function RootMenu(session,results) {
-    console.log("Sagar Resp : " + results.response);
-    if (results.response.toUpperCase().indexOf("PAYMENT") !== -1) {
-        session.beginDialog('/payment',results.response);
-    } else if (results.response.toUpperCase().indexOf("INVENTORY") !== -1) {
-        session.beginDialog('/Inventory');
-    }
-    else if (results.response.toUpperCase().indexOf("ISSUE") !== -1) {
-        session.beginDialog('/issues');
-    }
-    else if (results.response.toUpperCase().indexOf("CLEAR") !== -1) {
-        session.beginDialog('/ClearData');
-    }
-    else if (results.response.toUpperCase().indexOf("NO") != -1) {
-        session.endDialog();
-    }
-    else if (results.response.toUpperCase().indexOf("YES") != -1) {
-        session.beginDialog('/');
-    } else {
-        session.send("Not Trained...");
-        session.beginDialog('/');
-    }
+    const client = new Wit({accessToken: 'OMA6J3GMQV43OCFXKIA3QKP7BJQCFDBT'});
+    client.message(results.response, {}).then((data) => {
+
+        var intentData = data.entities.intent != undefined ? data.entities.intent[0] : {};
+
+        if (rootFlow.payment.is(intentData.value)) {
+            session.beginDialog('/payment', results.response);
+        }
+        else if (results.response.toUpperCase().indexOf("INVENTORY") !== -1) {
+            session.beginDialog('/Inventory');
+        }
+        else if (results.response.toUpperCase().indexOf("ISSUE") !== -1) {
+            session.beginDialog('/issues');
+        }
+        else if (results.response.toUpperCase().indexOf("CLEAR") !== -1) {
+            session.beginDialog('/ClearData');
+        }
+        else if (results.response.toUpperCase().indexOf("NO") != -1) {
+            session.endDialog();
+        }
+        else if (results.response.toUpperCase().indexOf("YES") != -1) {
+            session.beginDialog('/');
+        } else {
+            session.send("Not Trained...");
+            session.beginDialog('/');
+        }
+
+    })
+        .catch(console.error);
 }
 
 bot.dialog('/verification', [
@@ -96,7 +119,6 @@ bot.dialog('/verification', [
         builder.Prompts.text(session,"An OTP has been sent to the registered email on file. Please Enter the OTP.");
     },
     function (session, results) {
-        session.send(results.response);
         session.send("OTP Verified. Thank You");
         session.userData.isVerified = true;
         session.endDialog();
@@ -115,7 +137,14 @@ bot.dialog('/payment', [
             next();
         }
     },
+
+    //changes suggested by rakhi for demo -> 04-05-2017
     function (session) {
+        var response = session.dialogData.rootResponse;
+        session.beginDialog('/pendingPayments');
+    },
+
+    /*function (session) {
      var response = session.dialogData.rootResponse;
         if(response.toUpperCase().indexOf("PENDING") != -1)
         {
@@ -125,7 +154,7 @@ bot.dialog('/payment', [
         {
             session.beginDialog('/otherPayments');
         }
-    },
+    },*/
     function (session,results) {
         session.endDialogWithResult(results);
     }
@@ -136,10 +165,9 @@ bot.dialog('/otherPayments',[
         builder.Prompts.choice(session, "Payments invoice list","5100000015|5100000041|5100000098|5100000124",{ listStyle: builder.ListStyle.button });
     },
     function (session,results) {
-        var nextDate = Date.now();
-        //nextDate = nextDate.addMonths(1)
+        var newDate =  dateFormat("mediumDate");
         session.send("Following are the details of your invoice");
-        session.send("Invoice No : " + results.response.entity + "\n\n Status   : Payment Released \n\n Clearing Date   : 3" + nextDate+"\n\n Transaction No : TNX6532233");
+        session.send("Invoice No : " + results.response.entity + "\n\n Status   : Payment Released \n\n Clearing Date   : 3" + newDate +"\n\n Transaction No : TNX6532233");
         session.beginDialog('/ConversationEnd');
     },
     function (session,results) {
@@ -149,14 +177,14 @@ bot.dialog('/otherPayments',[
 
 bot.dialog('/pendingPayments',[
     function (session) {
-        builder.Prompts.choice(session, "Pending Payments invoice list","5100000013|5100000023|5100000067|5100000110",{ listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, "List of invoices pending payment : ","5100000013|5100000023|5100000067|5100000110",{ listStyle: builder.ListStyle.button });
     },
     function (session,results) {
-        var nextDate = Date.now();
-        //nextDate = nextDate.addMonths(1)
+        var newDate =  dateFormat("mediumDate");
+
         session.send("Following are the details of your invoice");
-        session.send("Invoice No : " + results.response.entity + "\n\n Status   : Approved and Pending Payments \n\n Clearing Date   : 3" + nextDate);
-        builder.Prompts.text(session, "would you like to connect with a representative?");
+        session.send("Invoice No : " + results.response.entity + "\n\n Status   : Approved and Pending Payments \n\n Clearing Date   : " + newDate);
+        builder.Prompts.text(session, "Would you like to connect with a representative?");
     },
     function (session,results) {
         if(results.response.toUpperCase().indexOf("YES") != -1)
@@ -167,39 +195,6 @@ bot.dialog('/pendingPayments',[
     },
     function (session,results) {
         session.endDialogWithResult(results);
-    }
-]);
-
-bot.dialog('rootMenu', [
-    function (session) {
-        builder.Prompts.choice(session, "Please select an option", "Payment Amount|Date of Payment|Payment Mode|Payment method|Bank|Main Menu", { listStyle: builder.ListStyle.button })
-    },
-    function (session, results) {
-        switch (results.response.index) {
-            case 0:
-                session.send("Amount is: $ 15,000");
-                session.replaceDialog('rootMenu');
-                break;
-            case 1:
-                session.send("Date is:  09/04/2017");
-                session.replaceDialog('rootMenu');
-                break;
-            case 2:
-                session.send("Payment Mode is: DD");
-                session.replaceDialog('rootMenu');
-                break;
-            case 3:
-                session.send("Payment Method is: DD");
-                session.replaceDialog('rootMenu');
-                break;
-            case 4:
-                session.send("Payment Bank is: ICICI");
-                session.replaceDialog('rootMenu');
-                break;
-            case 5:
-                session.endDialog();
-                break;
-        }
     }
 ]);
 
@@ -237,7 +232,7 @@ bot.dialog('/Inventory', [
         }
     },
     function (session,results) {
-        builder.Prompts.choice(session, "The following products are supplied by you. Choose one to know more.", "Silicon Wafer 200 micron|Galvanized metal mesh 10*20|Polished Silicon Wafer 2 inches|Plain Weave screen 600 microns|Steel Cable wire 2 mm|Main Menu", { listStyle: builder.ListStyle.button })
+        builder.Prompts.choice(session, "The following products are supplied by you. Choose one to know more.", "Silicon Wafer 200 micron|Galvanized metal mesh 10*20|Polished Silicon Wafer 2 inches|Plain Weave screen 600 microns|Steel Cable wire 2 mm", { listStyle: builder.ListStyle.button })
     },
     function (session, results) {
         session.send("Following are the details of your product");
@@ -252,10 +247,10 @@ bot.dialog('/Inventory', [
 bot.dialog('/newIssue', [
     function(session) {
         //session.send("OK! You have selected new issue, Please describe your issue in few words");
-        builder.Prompts.text(session, 'OK! You have selected new issue, Please describe your issue in few words');
+        builder.Prompts.text(session, 'OK! You have selected new issue.\n\nPlease describe your issue in a few words.');
     },
     function (session, results) {
-        builder.Prompts.text(session, 'what is priority (1-5)');
+        builder.Prompts.text(session, 'What is priority? (1-5)');
     },
     function (session, results) {
         session.send('Great! new issue created.Your issue key is 1234.');
@@ -276,7 +271,9 @@ bot.dialog('/existingIssue', [
         builder.Prompts.text(session, "would you like to escalate?");
     },
     function (session, results,next) {
-        //session.send("Ok! Thank you");
+        if (results.response.toUpperCase().indexOf("YES") !== -1) {
+            session.send("Ok! I have escalated the issue accordingly");
+        }
         next();
     },
     function (session,results) {
@@ -290,7 +287,7 @@ bot.dialog('/existingIssue', [
 bot.dialog('/ConversationEnd',[
     function (session) {
     console.log('this is end');
-        builder.Prompts.text(session, 'I hope i have resolved your queries! Want to know more?');
+        builder.Prompts.text(session, 'I hope i have resolved your queries!\n\n Want to know more?');
     }
 ]);
 
