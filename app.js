@@ -167,7 +167,7 @@ bot.dialog('/otherPayments',[
     function (session,results) {
         var newDate =  dateFormat("mediumDate");
         session.send("Following are the details of your invoice");
-        session.send("Invoice No : " + results.response.entity + "\n\n Status   : Payment Released \n\n Clearing Date   : 3" + newDate +"\n\n Transaction No : TNX6532233");
+        session.send("Invoice No : " + results.response.entity + "\n\nStatus   : Payment Released \n\nClearing Date   : 3" + newDate +"\n\nTransaction No : TNX6532233");
         session.beginDialog('/ConversationEnd');
     },
     function (session,results) {
@@ -183,13 +183,13 @@ bot.dialog('/pendingPayments',[
         var newDate =  dateFormat("mediumDate");
 
         session.send("Following are the details of your invoice");
-        session.send("Invoice No : " + results.response.entity + "\n\n Status   : Approved and Pending Payments \n\n Clearing Date   : " + newDate);
-        builder.Prompts.text(session, "Would you like to connect with a representative?");
+        session.send("Invoice No : " + results.response.entity + "\n\nStatus   : Approved and Pending Payments \n\nClearing Date   : " + newDate);
+        builder.Prompts.text(session, "Would you like to connect with a representativex ?");
     },
     function (session,results) {
         if(results.response.toUpperCase().indexOf("YES") != -1)
         {
-            session.send("Mr. Kunal Gaikwad \n\n Finance Executive \n\n Email : kunam.gaikwad@sapex.com \n\n Office : 020-2521134");
+            session.send("Mr. Kunal Gaikwad \n\nFinance Executive \n\nEmail : kunam.gaikwad@sapex.com \n\nOffice : 020-2521134");
         }
         session.beginDialog('/ConversationEnd');
     },
@@ -236,7 +236,7 @@ bot.dialog('/Inventory', [
     },
     function (session, results) {
         session.send("Following are the details of your product");
-        session.send("Product : " + results.response.entity + "\n\n Stock   : 120 Units \n\n Weekly rate of consumption   : 46 Units \n\n Reorder Level : 50 ");
+        session.send("Product : " + results.response.entity + "\n\nStock   : 120 Units \n\nWeekly rate of consumption   : 46 Units \n\nReorder Level : 50 ");
         session.beginDialog('/ConversationEnd');
     },
     function (session,results) {

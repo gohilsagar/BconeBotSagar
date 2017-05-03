@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bbb9dce3-d65d-44d7-b7d8-9d6ef5534ee7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,10 +21,10 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="196" column="40" lean-forward="true" selection-start-line="196" selection-start-column="40" selection-end-line="196" selection-end-column="40" />
+            <state relative-caret-position="330">
+              <caret line="186" column="88" lean-forward="false" selection-start-line="186" selection-start-column="88" selection-end-line="186" selection-end-column="88" />
               <folding>
-                <marker date="1493814389254" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
+                <marker date="1493814802551" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
               </folding>
             </state>
           </provider>
@@ -240,12 +238,12 @@
       <updated>1492508451101</updated>
       <workItem from="1492508452713" duration="11567000" />
       <workItem from="1492597024078" duration="48755000" />
-      <workItem from="1493189054241" duration="17159000" />
+      <workItem from="1493189054241" duration="17561000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77481000" />
+    <option name="totallyTimeSpent" value="77883000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -295,7 +293,7 @@
         <state relative-caret-position="1836">
           <caret line="110" column="9" lean-forward="false" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
           <folding>
-            <marker date="1493814389254" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
+            <marker date="1493814802551" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
           </folding>
         </state>
       </provider>
@@ -313,7 +311,7 @@
         <state relative-caret-position="935">
           <caret line="57" column="3" lean-forward="true" selection-start-line="57" selection-start-column="3" selection-end-line="57" selection-end-column="3" />
           <folding>
-            <marker date="1493814389254" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
+            <marker date="1493814802551" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
           </folding>
         </state>
       </provider>
@@ -345,10 +343,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="196" column="40" lean-forward="true" selection-start-line="196" selection-start-column="40" selection-end-line="196" selection-end-column="40" />
+        <state relative-caret-position="330">
+          <caret line="186" column="88" lean-forward="false" selection-start-line="186" selection-start-column="88" selection-end-line="186" selection-end-column="88" />
           <folding>
-            <marker date="1493814389254" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
+            <marker date="1493814802551" expanded="false" signature="0:48" ph="/** Created by sagar.gohil on 18-04-2017. ...*/" />
           </folding>
         </state>
       </provider>
