@@ -52,6 +52,10 @@ bot.on('conversationUpdate', function (message) {
     }
 });
 
+Date.prototype.addDays = function(days) {
+    this.setDate(this.getDate() + parseInt(days));
+    return this;
+};
 
 // Root dialog for entry point in application
 bot.dialog('/', [
@@ -98,6 +102,7 @@ function RootMenu(session,results) {
             session.beginDialog('/ClearData');
         }
         else if (results.response.toUpperCase().indexOf("NO") != -1) {
+            session.send("Bye!");
             session.endDialog();
         }
         else if (results.response.toUpperCase().indexOf("YES") != -1) {
@@ -180,7 +185,11 @@ bot.dialog('/pendingPayments',[
         builder.Prompts.choice(session, "List of invoices pending payment : ","5100000013|5100000023|5100000067|5100000110",{ listStyle: builder.ListStyle.button });
     },
     function (session,results) {
-        var newDate =  dateFormat("mediumDate");
+
+        var currentDate = new Date();
+        // to add 4 days to current date
+        currentDate.addDays(4);
+        var newDate =  dateFormat(currentDate,"mediumDate");
 
         session.send("Following are the details of your invoice");
         session.send("Invoice No : " + results.response.entity + "\n\nStatus   : Approved and Pending Payments \n\nClearing Date   : " + newDate);
