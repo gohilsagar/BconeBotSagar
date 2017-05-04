@@ -184,7 +184,7 @@ bot.dialog('/pendingPayments',[
 
         session.send("Following are the details of your invoice");
         session.send("Invoice No : " + results.response.entity + "\n\nStatus   : Approved and Pending Payments \n\nClearing Date   : " + newDate);
-        builder.Prompts.text(session, "Would you like to connect with a representativex ?");
+        builder.Prompts.text(session, "Would you like to connect with a representative?");
     },
     function (session,results) {
         if(results.response.toUpperCase().indexOf("YES") != -1)
@@ -267,7 +267,7 @@ bot.dialog('/existingIssue', [
     },
     function (session, results) {
         session.send("Following are the details of your issue");
-        session.send("Ticket No : "+ results.response.entity +"\n\nSummary   : Incorrect vendor contact details \n\n Priority   : 3");
+        session.send("Ticket No : "+ results.response.entity +"\n\nSummary   : Incorrect vendor contact details \n\nPriority   : 3");
         builder.Prompts.text(session, "would you like to escalate?");
     },
     function (session, results,next) {
@@ -287,7 +287,7 @@ bot.dialog('/existingIssue', [
 bot.dialog('/ConversationEnd',[
     function (session) {
     console.log('this is end');
-        builder.Prompts.text(session, 'I hope i have resolved your queries!\n\n Want to know more?');
+        builder.Prompts.text(session, 'I hope i have resolved your queries!\n\nWant to know more?');
     }
 ]);
 
