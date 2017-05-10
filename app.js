@@ -62,7 +62,7 @@ bot.dialog('/', [
     function (session, results) {
 
         // Changes suggested by rakhi for demo 04-05-2017
-        builder.Prompts.choice(session, "Please select an option below", "Payment Status|Inventory Information|Issues", {listStyle: builder.ListStyle.button});
+        builder.Prompts.choice(session, "Please select an option below", "Payment Status|Inventory Information|Issues|Analytics", {listStyle: builder.ListStyle.button});
         // End
 
         /*builder.Prompts.text(session, "You can say : 'Payment status' or 'Pending Payment' or 'Inventory' or 'Issue' ");*/
@@ -90,6 +90,14 @@ function RootMenu(session,results) {
         var intentData = data.entities.intent != undefined ? data.entities.intent[0] : {};
 
         if (rootFlow.payment.is(intentData.value)) {
+            if (data.entities.PaymentType != undefined) {
+              session.conversationData.paymentType = data.entities.PaymentType[0].value;
+            }
+
+            if (data.entities.InvoiceNo != undefined) {
+                session.conversationData.invoiceNo = data.entities.InvoiceNo[0].value;
+            }
+
             session.beginDialog('/payment', results.response);
         }
         else if (results.response.toUpperCase().indexOf("INVENTORY") !== -1) {
@@ -101,6 +109,9 @@ function RootMenu(session,results) {
         else if (results.response.toUpperCase().indexOf("CLEAR") !== -1) {
             session.beginDialog('/ClearData');
         }
+        else if (results.response.toUpperCase().indexOf("ANALYTICS") !== -1) {
+            session.beginDialog('/Analytics');
+        }
         else if (results.response.toUpperCase().indexOf("NO") != -1) {
             session.send("Bye!");
             session.endDialog();
@@ -111,10 +122,10 @@ function RootMenu(session,results) {
             session.send("Not Trained...");
             session.beginDialog('/');
         }
-
     })
         .catch(console.error);
 }
+
 
 bot.dialog('/verification', [
     function (session) {
@@ -133,7 +144,7 @@ bot.dialog('/verification', [
 bot.dialog('/payment', [
     function (session,args,next) {
         var response = args || {};
-       ; session.dialogData.rootResponse = response;
+        session.dialogData.rootResponse = response;
         if (!session.userData.isVerified) {
             session.beginDialog('/verification');
         }
@@ -181,8 +192,12 @@ bot.dialog('/otherPayments',[
 ]);
 
 bot.dialog('/pendingPayments',[
-    function (session) {
-        builder.Prompts.choice(session, "List of invoices pending payment : ","5100000013|5100000023|5100000067|5100000110",{ listStyle: builder.ListStyle.button });
+    function (session,args,next) {
+        if (session.conversationData.invoiceNo == undefined) {
+            builder.Prompts.choice(session, "List of invoices pending payment : ", "5100000013|5100000023|5100000067|5100000110", {listStyle: builder.ListStyle.button});
+        }
+        else
+            next();
     },
     function (session,results) {
 
@@ -191,8 +206,10 @@ bot.dialog('/pendingPayments',[
         currentDate.addDays(4);
         var newDate =  dateFormat(currentDate,"mediumDate");
 
+        var invoiceNo = results.response == undefined ? session.conversationData.invoiceNo :results.response.entity;
+
         session.send("Following are the details of your invoice");
-        session.send("Invoice No : " + results.response.entity + "\n\nStatus   : Approved and Pending Payments \n\nClearing Date   : " + newDate);
+        session.send("Invoice No : " + invoiceNo + "\n\nStatus   : Approved and Pending Payments \n\nClearing Date   : " + newDate);
         builder.Prompts.text(session, "Would you like to connect with a representative?");
     },
     function (session,results) {
@@ -293,9 +310,29 @@ bot.dialog('/existingIssue', [
     }
 ]);
 
+bot.dialog('/Analytics',[
+    function (session) {
+        builder.Prompts.choice(session, "Please Select Type", "CPO Dashboard|Supplier Visibility|Manager Dashboard|Supplier Compliance", { listStyle: builder.ListStyle.button })
+    },
+    function (session,results) {
+        var option = results.response.entity;
+        if(option == "CPO Dashboard")
+        {
+           var cards = CreateCPOCards();
+           var reply =
+               new builder.Message()
+                   .attachmentLayout(builder.AttachmentLayout.carousel)
+                   .attachments(cards);
+
+            session.send(reply);
+        }
+
+    }
+])
+
 bot.dialog('/ConversationEnd',[
     function (session) {
-    console.log('this is end');
+        session.conversationData  = {};
         builder.Prompts.text(session, 'I hope i have resolved your queries!\n\nWant to know more?');
     }
 ]);
@@ -307,3 +344,25 @@ bot.dialog('/ClearData', [
         session.beginDialog('/ConversationEnd');
     }
 ]);
+
+function CreateCPOCards(session) {
+    return[
+        CreateCard(session, 'SpendAnalytics','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/SpendTrend.PNG'),
+        CreateCard(session,'Top 10 Companies','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10Companies.PNG'),
+        CreateCard(session,'Top 10 Suppliers','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10Suppliers.PNG'),
+        CreateCard(session,'Top 10 Spend Analytics','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10SpendCategories.PNG')
+    ];
+}
+
+function CreateCard(session,title,text,subtitle,imageURL) {
+   return new builder.ThumbnailCard(session)
+       .title(title)
+       .subtitle(subtitle)
+       .text(text)
+       .images([
+           builder.CardImage.create(session, imageURL)
+       ])
+       .buttons([
+           builder.CardAction.showImage(session, imageURL, 'See More')
+       ])
+}
