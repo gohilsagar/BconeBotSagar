@@ -20,8 +20,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="400" column="20" lean-forward="false" selection-start-line="399" selection-start-column="7" selection-end-line="400" selection-end-column="20" />
+            <state relative-caret-position="102">
+              <caret line="369" column="0" lean-forward="true" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -242,12 +242,12 @@
       <workItem from="1492597024078" duration="48755000" />
       <workItem from="1493189054241" duration="20447000" />
       <workItem from="1493966930067" duration="13000" />
-      <workItem from="1493978179092" duration="21052000" />
+      <workItem from="1493978179092" duration="21752000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="101834000" />
+    <option name="totallyTimeSpent" value="102534000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -373,8 +373,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="400" column="20" lean-forward="false" selection-start-line="399" selection-start-column="7" selection-end-line="400" selection-end-column="20" />
+        <state relative-caret-position="102">
+          <caret line="369" column="0" lean-forward="true" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>
