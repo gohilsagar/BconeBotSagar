@@ -312,7 +312,7 @@ bot.dialog('/existingIssue', [
 
 bot.dialog('/Analytics',[
     function (session,args) {
-        builder.Prompts.choice(session, "Please Select Type", "CPO Dashboard|Supplier Visibility|Manager Dashboard|Supplier Compliance", { listStyle: builder.ListStyle.button })
+        builder.Prompts.choice(session, "Please select a dashboard", "CPO Dashboard|Supplier Visibility|Manager Dashboard|Supplier Compliance", { listStyle: builder.ListStyle.button })
     },
     function (session,results) {
         var option = results.response.entity;
@@ -397,12 +397,13 @@ function CreateSupplierComplianceCards(session) {
 function CreateCard(session,title,text,subtitle,imageURL) {
    return new builder.HeroCard(session)
        .title(title)
-       .subtitle(subtitle)
-       .text(text)
+       /*.subtitle(subtitle)
+       .text(text)*/
        .images([
            builder.CardImage.create(session, imageURL)
        ])
        .buttons([
-           builder.CardAction.openUrl(session, imageURL, 'See More'),
+           builder.CardAction.openUrl(session, imageURL, 'See More')
+           /*,builder.CardAction.openUrl(session, 'http://neo.bcone.com/sense/app/edc8d0e8-ce10-4160-9ba7-25b63904c653/sheet/JkmJaP/state/analysis', 'Go To')*/
        ])
 }
