@@ -312,27 +312,36 @@ bot.dialog('/existingIssue', [
 
 bot.dialog('/Analytics',[
     function (session,args) {
-    console.log("asdas : "+JSON.stringify(args));
-        console.log("main Called");
         builder.Prompts.choice(session, "Please Select Type", "CPO Dashboard|Supplier Visibility|Manager Dashboard|Supplier Compliance", { listStyle: builder.ListStyle.button })
     },
     function (session,results) {
         var option = results.response.entity;
-        if(option == "CPO Dashboard")
-        {
-           var cards = CreateCPOCards();
-           var reply =
-               new builder.Message()
-                   .attachmentLayout(builder.AttachmentLayout.carousel)
-                   .attachments(cards);
-
-            session.send(reply);
+        var cards = {};
+        if (option.toUpperCase().indexOf("CPO") !== -1) {
+            cards = CreateCPOCards();
         }
+        else if (option.toUpperCase().indexOf("VISIBILITY") !== -1) {
+            cards = CreateSupplierVisibilityCards();
+        }
+        else if (option.toUpperCase().indexOf("MANAGER") !== -1) {
+            cards = CreateManagerDashboardCards();
+        }
+        else if (option.toUpperCase().indexOf("COMPLIANCE") !== -1) {
+            cards = CreateSupplierComplianceCards();
+        }
+
+        var reply =
+            new builder.Message()
+                .attachmentLayout(builder.AttachmentLayout.carousel)
+                .attachments(cards);
+
+        session.send(reply);
+
+        session.beginDialog('/ConversationEnd');
     },
     function (session,results) {
-        console.log("post back Called");
+        session.endDialogWithResult(results);
     }
-    
 ])
 
 bot.dialog('/ConversationEnd',[
@@ -356,6 +365,32 @@ function CreateCPOCards(session) {
         CreateCard(session,'Top 10 Companies','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10Companies.PNG'),
         CreateCard(session,'Top 10 Suppliers','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10Suppliers.PNG'),
         CreateCard(session,'Top 10 Spend Analytics','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10SpendCategories.PNG')
+    ];
+}
+
+function CreateSupplierVisibilityCards(session) {
+    return[
+        CreateCard(session,'Top 10 Materials','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10Materials.PNG'),
+        CreateCard(session,'Top 10 Plants','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10Plant.PNG'),
+        CreateCard(session,'Top 10 Suppliers','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/T10Suppliers2.PNG')
+    ];
+}
+
+function CreateManagerDashboardCards(session) {
+    return[
+        CreateCard(session,'DIRECT vs INDIRECT','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/DIRECTvsINDIRECT.PNG'),
+        CreateCard(session,'NON PO PROFILING','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/NON_PO_PROFILING.PNG'),
+        CreateCard(session,'OFF CONTRACT PROFILING','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/OFF_CONTRACT_PROFILING.PNG'),
+        CreateCard(session,'PAYMENT TERM INCONSISTENCIES','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/PAYMENT_TERM_INCONSISTENCIES.PNG'),
+        CreateCard(session,'AFTER THE FACT SPEND','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/AFTER_THE_FACT_SPEND.PNG')
+    ];
+}
+
+function CreateSupplierComplianceCards(session) {
+    return[
+        CreateCard(session,'ACTUAL vs BUDGETED','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/ACTUALvsBUDGETED.PNG'),
+        CreateCard(session,'DIRECT vs INDIRECT','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/DIRECTvsINDIRECT2.PNG'),
+        CreateCard(session,'SEND CATEGORY ANALYSIS','Sample Text for demo','sample subtitle','https://cuianalytics.blob.core.windows.net/c1analytics/SENDCATEGORY_ANALYSIS.PNG')
     ];
 }
 
