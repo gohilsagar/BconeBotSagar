@@ -20,8 +20,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="365" column="38" lean-forward="false" selection-start-line="365" selection-start-column="38" selection-end-line="365" selection-end-column="38" />
+            <state relative-caret-position="323">
+              <caret line="371" column="9" lean-forward="true" selection-start-line="371" selection-start-column="9" selection-end-line="371" selection-end-column="9" />
               <folding>
                 <element signature="e#0#48#0" expanded="false" />
               </folding>
@@ -50,6 +50,7 @@
       <find>rootMenu</find>
       <find>\n\n</find>
       <find>session.conversationData.invoiceNo</find>
+      <find>asdas</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -241,12 +242,12 @@
       <workItem from="1492597024078" duration="48755000" />
       <workItem from="1493189054241" duration="20447000" />
       <workItem from="1493966930067" duration="13000" />
-      <workItem from="1493978179092" duration="14793000" />
+      <workItem from="1493978179092" duration="17281000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95575000" />
+    <option name="totallyTimeSpent" value="98063000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -257,7 +258,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2976378" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2976378" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -372,8 +373,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="365" column="38" lean-forward="false" selection-start-line="365" selection-start-column="38" selection-end-line="365" selection-end-column="38" />
+        <state relative-caret-position="323">
+          <caret line="371" column="9" lean-forward="true" selection-start-line="371" selection-start-column="9" selection-end-line="371" selection-end-column="9" />
           <folding>
             <element signature="e#0#48#0" expanded="false" />
           </folding>

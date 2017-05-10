@@ -311,7 +311,9 @@ bot.dialog('/existingIssue', [
 ]);
 
 bot.dialog('/Analytics',[
-    function (session) {
+    function (session,args) {
+    console.log("asdas : "+JSON.stringify(args));
+        console.log("main Called");
         builder.Prompts.choice(session, "Please Select Type", "CPO Dashboard|Supplier Visibility|Manager Dashboard|Supplier Compliance", { listStyle: builder.ListStyle.button })
     },
     function (session,results) {
@@ -326,8 +328,11 @@ bot.dialog('/Analytics',[
 
             session.send(reply);
         }
-
+    },
+    function (session,results) {
+        console.log("post back Called");
     }
+    
 ])
 
 bot.dialog('/ConversationEnd',[
@@ -355,7 +360,7 @@ function CreateCPOCards(session) {
 }
 
 function CreateCard(session,title,text,subtitle,imageURL) {
-   return new builder.ThumbnailCard(session)
+   return new builder.HeroCard(session)
        .title(title)
        .subtitle(subtitle)
        .text(text)
@@ -363,6 +368,6 @@ function CreateCard(session,title,text,subtitle,imageURL) {
            builder.CardImage.create(session, imageURL)
        ])
        .buttons([
-           builder.CardAction.openUrl(session, imageURL, 'See More')
+           builder.CardAction.openUrl(session, imageURL, 'See More'),
        ])
 }
