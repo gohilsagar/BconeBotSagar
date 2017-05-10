@@ -363,6 +363,6 @@ function CreateCard(session,title,text,subtitle,imageURL) {
            builder.CardImage.create(session, imageURL)
        ])
        .buttons([
-           builder.CardAction.showImage(session, imageURL, 'See More')
+           builder.CardAction.openUrl(session, imageURL, 'See More')
        ])
 }
