@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "botbuilder": "^3.7.0",
+    "botbuilder": "^3.8.1",
     "dateformat": "^2.0.0",
     "enum": "^2.4.0",
     "node-wit": "^4.2.0",

@@ -4,13 +4,12 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var SimpleDialog_1 = require("./SimpleDialog");
+var WaterfallDialog_1 = require("./WaterfallDialog");
 var DialogAction_1 = require("./DialogAction");
 var Dialog_1 = require("./Dialog");
 var IntentRecognizerSet_1 = require("./IntentRecognizerSet");
 var RegExpRecognizer_1 = require("./RegExpRecognizer");
 var consts = require("../consts");
-var logger = require("../logger");
 var RecognizeMode;
 (function (RecognizeMode) {
     RecognizeMode[RecognizeMode["onBegin"] = 0] = "onBegin";
@@ -39,7 +38,7 @@ var IntentDialog = (function (_super) {
         var recognize = (mode == RecognizeMode.onBegin || (isRoot && mode == RecognizeMode.onBeginIfRoot));
         if (this.beginDialog) {
             try {
-                logger.info(session, 'IntentDialog.begin()');
+                session.logger.log(session.dialogStack(), 'IntentDialog.begin()');
                 this.beginDialog(session, args, function () {
                     if (recognize) {
                         _this.replyReceived(session);
@@ -110,13 +109,13 @@ var IntentDialog = (function (_super) {
             throw new Error("A handler for '" + id + "' already exists.");
         }
         if (Array.isArray(dialogId)) {
-            this.handlers[id] = SimpleDialog_1.createWaterfall(dialogId);
+            this.handlers[id] = WaterfallDialog_1.WaterfallDialog.createHandler(dialogId);
         }
         else if (typeof dialogId === 'string') {
             this.handlers[id] = DialogAction_1.DialogAction.beginDialog(dialogId, dialogArgs);
         }
         else {
-            this.handlers[id] = SimpleDialog_1.createWaterfall([dialogId]);
+            this.handlers[id] = WaterfallDialog_1.WaterfallDialog.createHandler([dialogId]);
         }
         return this;
     };
@@ -128,13 +127,13 @@ var IntentDialog = (function (_super) {
     };
     IntentDialog.prototype.onDefault = function (dialogId, dialogArgs) {
         if (Array.isArray(dialogId)) {
-            this.handlers[consts.Intents.Default] = SimpleDialog_1.createWaterfall(dialogId);
+            this.handlers[consts.Intents.Default] = WaterfallDialog_1.WaterfallDialog.createHandler(dialogId);
         }
         else if (typeof dialogId === 'string') {
             this.handlers[consts.Intents.Default] = DialogAction_1.DialogAction.beginDialog(dialogId, dialogArgs);
         }
         else {
-            this.handlers[consts.Intents.Default] = SimpleDialog_1.createWaterfall([dialogId]);
+            this.handlers[consts.Intents.Default] = WaterfallDialog_1.WaterfallDialog.createHandler([dialogId]);
         }
         return this;
     };
@@ -145,11 +144,11 @@ var IntentDialog = (function (_super) {
     IntentDialog.prototype.invokeIntent = function (session, recognizeResult) {
         var activeIntent;
         if (recognizeResult.intent && this.handlers.hasOwnProperty(recognizeResult.intent)) {
-            logger.info(session, 'IntentDialog.matches(%s)', recognizeResult.intent);
+            session.logger.log(session.dialogStack(), 'IntentDialog.matches(' + recognizeResult.intent + ')');
             activeIntent = recognizeResult.intent;
         }
         else if (this.handlers.hasOwnProperty(consts.Intents.Default)) {
-            logger.info(session, 'IntentDialog.onDefault()');
+            session.logger.log(session.dialogStack(), 'IntentDialog.onDefault()');
             activeIntent = consts.Intents.Default;
         }
         if (activeIntent) {
@@ -162,7 +161,7 @@ var IntentDialog = (function (_super) {
             }
         }
         else {
-            logger.warn(session, 'IntentDialog - no intent handler found for %s', recognizeResult.intent);
+            session.logger.warn(session.dialogStack(), 'IntentDialog - no intent handler found for ' + recognizeResult.intent);
         }
     };
     IntentDialog.prototype.emitError = function (session, err) {
